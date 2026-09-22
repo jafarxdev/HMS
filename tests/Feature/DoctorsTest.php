@@ -9,6 +9,18 @@ use Livewire\Livewire;
 
 uses(LazilyRefreshDatabase::class);
 
+test('doctor email and linked login account must be unique', function () {
+    $doctorUser = User::factory()->doctor()->create();
+    $existing = Doctor::factory()->for($doctorUser)->create();
+    $doctor = Doctor::factory()->create();
+
+    Livewire::actingAs(User::factory()->admin()->create())->test(Doctors::class)
+        ->call('edit', $doctor->id)->set('form.email', $existing->email)->set('form.user_id', $doctorUser->id)
+        ->call('save')->assertHasErrors(['form.email' => 'unique', 'form.user_id' => 'unique']);
+
+    expect($doctor->fresh()->email)->toBe($doctor->email);
+});
+
 test('admin can create update and delete a doctor in a department', function () {
     $admin = User::factory()->admin()->create();
     $department = Department::factory()->create();

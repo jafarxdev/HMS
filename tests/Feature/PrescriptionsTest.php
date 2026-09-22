@@ -13,6 +13,33 @@ use Livewire\Livewire;
 
 uses(LazilyRefreshDatabase::class);
 
+test('failed edits restore both the existing prescription and its old items', function () {
+    $prescription = Prescription::factory()->has(PrescriptionItem::factory()->state(['medicine_name' => 'Original medicine']), 'items')->create(['notes' => 'Original notes']);
+    $component = Livewire::actingAs(User::factory()->admin()->create())->test(Prescriptions::class)
+        ->call('edit', $prescription->id)->set('form.notes', 'Changed notes')->set('items.0.medicine_name', 'Fail');
+    DB::unprepared("CREATE TRIGGER reject_test_update BEFORE INSERT ON prescription_items WHEN NEW.medicine_name = 'Fail' BEGIN SELECT RAISE(ABORT, 'Test update failure'); END");
+
+    try {
+        expect(fn () => $component->call('save'))->toThrow(QueryException::class);
+    } finally {
+        DB::unprepared('DROP TRIGGER reject_test_update');
+    }
+
+    $this->assertDatabaseHas('prescriptions', ['id' => $prescription->id, 'notes' => 'Original notes']);
+    $this->assertDatabaseHas('prescription_items', ['prescription_id' => $prescription->id, 'medicine_name' => 'Original medicine']);
+    $this->assertDatabaseCount('prescription_items', 1);
+});
+
+test('prescriptions require an item and a date on or after the visit', function () {
+    $prescription = Prescription::factory()->has(PrescriptionItem::factory(), 'items')->create();
+    $component = Livewire::actingAs(User::factory()->admin()->create())->test(Prescriptions::class)
+        ->call('edit', $prescription->id)->set('form.prescription_date', today()->subDay()->toDateString())
+        ->call('save')->assertHasErrors('form.prescription_date');
+    $component->set('items', [])->call('save')->assertHasErrors('items');
+
+    $this->assertDatabaseCount('prescription_items', 1);
+});
+
 test('doctor can create and edit a prescription with multiple medicines', function () {
     $user = User::factory()->doctor()->create();
     $doctor = Doctor::factory()->for($user)->create();
