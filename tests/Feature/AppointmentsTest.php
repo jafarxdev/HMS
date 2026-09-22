@@ -11,6 +11,32 @@ use Livewire\Livewire;
 
 uses(LazilyRefreshDatabase::class);
 
+test('existing appointments can be cancelled after their doctor becomes inactive', function () {
+    $appointment = Appointment::factory()->create();
+    $appointment->doctor->update(['status' => 'inactive']);
+
+    Livewire::actingAs(User::factory()->receptionist()->create())->test(Appointments::class)
+        ->call('edit', $appointment->id)->set('form.status', 'cancelled')->call('save')->assertHasNoErrors();
+
+    $this->assertDatabaseHas('appointments', ['id' => $appointment->id, 'status' => 'cancelled']);
+});
+
+test('a cancelled appointment cannot be reactivated into an occupied slot', function () {
+    $appointment = Appointment::factory()->create();
+    $cancelled = Appointment::factory()->create([
+        'doctor_id' => $appointment->doctor_id,
+        'appointment_date' => $appointment->appointment_date,
+        'appointment_time' => $appointment->appointment_time,
+        'status' => 'cancelled',
+    ]);
+
+    Livewire::actingAs(User::factory()->admin()->create())->test(Appointments::class)
+        ->call('edit', $cancelled->id)->set('form.status', 'scheduled')->call('save')
+        ->assertHasErrors('form.appointment_time');
+
+    $this->assertDatabaseHas('appointments', ['id' => $cancelled->id, 'status' => 'cancelled']);
+});
+
 test('receptionist can book update status filter and delete an appointment', function () {
     $patient = Patient::factory()->create();
     $doctor = Doctor::factory()->create();

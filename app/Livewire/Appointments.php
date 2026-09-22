@@ -85,9 +85,19 @@ class Appointments extends Component
     public function save(): void
     {
         Gate::authorize('manage-appointments');
+        $existing = $this->editingId ? Appointment::findOrFail($this->editingId) : null;
+        $doctorRule = Rule::exists('doctors', 'id');
+        $closingExistingAppointment = $existing
+            && in_array($this->form['status'], ['completed', 'cancelled'])
+            && (int) $this->form['doctor_id'] === $existing->doctor_id;
+
+        if (! $closingExistingAppointment) {
+            $doctorRule->where('status', 'active');
+        }
+
         $data = $this->validate([
             'form.patient_id' => ['required', 'integer', 'exists:patients,id'],
-            'form.doctor_id' => ['required', 'integer', Rule::exists('doctors', 'id')->where('status', 'active')],
+            'form.doctor_id' => ['required', 'integer', $doctorRule],
             'form.appointment_date' => ['required', 'date_format:Y-m-d'],
             'form.appointment_time' => ['required', 'date_format:H:i'],
             'form.status' => ['required', Rule::in(Appointment::STATUSES)],
