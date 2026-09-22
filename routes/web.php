@@ -16,11 +16,11 @@ Route::livewire('/login', Login::class)->middleware('guest')->name('login');
 
 Route::middleware('auth')->group(function () {
     Route::livewire('/dashboard', Dashboard::class)->name('dashboard');
-    Route::livewire('/prescriptions', Prescriptions::class)->name('prescriptions');
-    Route::livewire('/medical-records', MedicalRecords::class)->name('medical-records');
-    Route::livewire('/appointments', Appointments::class)->name('appointments');
-    Route::livewire('/patients', Patients::class)->name('patients');
-    Route::livewire('/doctors', Doctors::class)->name('doctors');
-    Route::livewire('/departments', Departments::class)->name('departments');
+    Route::livewire('/prescriptions', Prescriptions::class)->middleware('can:manage-prescriptions')->name('prescriptions');
+    Route::livewire('/medical-records', MedicalRecords::class)->middleware('can:manage-medical-records')->name('medical-records');
+    Route::livewire('/appointments', Appointments::class)->middleware('can:manage-appointments')->name('appointments');
+    Route::livewire('/patients', Patients::class)->middleware('can:manage-patients')->name('patients');
+    Route::livewire('/doctors', Doctors::class)->middleware('can:manage-doctors')->name('doctors');
+    Route::livewire('/departments', Departments::class)->middleware('can:manage-departments')->name('departments');
     Route::post('/logout', LogoutController::class)->name('logout');
 });

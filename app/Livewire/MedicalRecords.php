@@ -97,6 +97,7 @@ class MedicalRecords extends Component
 
         if (auth()->user()->role === 'doctor') {
             abort_unless((int) $data['doctor_id'] === (auth()->user()->doctor?->id ?? 0), 403);
+            abort_unless($this->patientsQuery()->whereKey($data['patient_id'])->exists(), 403);
         }
 
         if ($this->editingId) {
@@ -127,7 +128,7 @@ class MedicalRecords extends Component
     {
         Gate::authorize('manage-medical-records');
         $record = MedicalRecord::findOrFail($id);
-        Gate::authorize('update', $record);
+        Gate::authorize('delete', $record);
         if ($record->prescriptions()->exists()) {
             session()->flash('error', 'This medical record has prescriptions and cannot be deleted.');
 
@@ -164,8 +165,23 @@ class MedicalRecords extends Component
                 ->when($this->patientFilter !== '', fn (Builder $query) => $query->where('patient_id', $this->patientFilter))
                 ->when($this->doctorFilter !== '', fn (Builder $query) => $query->where('doctor_id', $this->doctorFilter))
                 ->orderByDesc('id')->paginate(10),
-            'patients' => Patient::orderBy('name')->get(),
+            'patients' => $this->patientsQuery()->orderBy('name')->get(),
             'doctors' => Doctor::when(auth()->user()->role === 'doctor', fn (Builder $query) => $query->where('user_id', auth()->id()))->orderBy('name')->get(),
         ]);
+    }
+
+    protected function patientsQuery(): Builder
+    {
+        $query = Patient::query();
+
+        if (auth()->user()->role === 'doctor') {
+            $doctorId = auth()->user()->doctor?->id ?? 0;
+            $query->where(function (Builder $query) use ($doctorId): void {
+                $query->whereHas('appointments', fn (Builder $query) => $query->where('doctor_id', $doctorId))
+                    ->orWhereHas('medicalRecords', fn (Builder $query) => $query->where('doctor_id', $doctorId));
+            });
+        }
+
+        return $query;
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\MedicalRecords;
+use App\Models\Appointment;
 use App\Models\Doctor;
 use App\Models\MedicalRecord;
 use App\Models\Patient;
@@ -15,6 +16,7 @@ test('doctor can create update and delete their own medical record', function ()
     $user = User::factory()->doctor()->create();
     $doctor = Doctor::factory()->for($user)->create();
     $patient = Patient::factory()->create();
+    Appointment::factory()->for($patient)->for($doctor)->create();
     $component = Livewire::actingAs($user)->test(MedicalRecords::class)->call('create')
         ->set('form.patient_id', $patient->id)->set('form.doctor_id', $doctor->id)
         ->set('form.visit_date', today()->toDateString())->set('form.diagnosis', 'Allergy')
