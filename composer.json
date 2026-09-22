@@ -1,8 +1,8 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "hospital/hospital-management-system",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "A simple hospital management system built with Laravel and Livewire.",
     "keywords": [
         "laravel",
         "framework"
