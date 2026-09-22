@@ -14,6 +14,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Locked;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -22,12 +23,16 @@ class Appointments extends Component
 {
     use WithPagination;
 
+    #[Url(except: '')]
     public string $search = '';
 
+    #[Url(except: '')]
     public string $dateFilter = '';
 
+    #[Url(except: '')]
     public string $doctorFilter = '';
 
+    #[Url(except: '')]
     public string $statusFilter = '';
 
     #[Locked]
@@ -43,6 +48,13 @@ class Appointments extends Component
         if (in_array($property, ['search', 'dateFilter', 'doctorFilter', 'statusFilter'])) {
             $this->resetPage();
         }
+    }
+
+    public function resetFilters(): void
+    {
+        Gate::authorize('manage-appointments');
+        $this->reset('search', 'dateFilter', 'doctorFilter', 'statusFilter');
+        $this->resetPage();
     }
 
     public function create(): void

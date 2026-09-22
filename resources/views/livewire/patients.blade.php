@@ -27,6 +27,11 @@
         <x-input type="search" wire:model.live.debounce.300ms="search" aria-label="Search patients" placeholder="Search patients…" />
         <x-select wire:model.live="genderFilter" aria-label="Gender filter"><option value="">All genders</option><option value="male">Male</option><option value="female">Female</option><option value="other">Other</option></x-select>
     </div>
+    <div class="mb-4 flex items-center gap-4">
+        <x-button wire:click="resetFilters" variant="secondary">Clear filters</x-button>
+        <span wire:loading.delay role="status" class="text-sm text-slate-500">Updating…</span>
+        <span class="text-sm text-slate-500">{{ $records->total() }} results</span>
+    </div>
     <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white">
         <table class="w-full text-left text-sm">
             <thead class="bg-slate-100 text-slate-600"><tr><th class="p-4">Patient</th><th class="p-4">Gender</th><th class="p-4">Date of birth</th><th class="p-4">Contact</th><th class="p-4 text-right">Actions</th></tr></thead>

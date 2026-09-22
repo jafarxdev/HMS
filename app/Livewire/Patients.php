@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Locked;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -18,8 +19,10 @@ class Patients extends Component
 {
     use WithPagination;
 
+    #[Url(except: '')]
     public string $search = '';
 
+    #[Url(except: '')]
     public string $genderFilter = '';
 
     #[Locked]
@@ -35,6 +38,13 @@ class Patients extends Component
         if (in_array($property, ['search', 'genderFilter'])) {
             $this->resetPage();
         }
+    }
+
+    public function resetFilters(): void
+    {
+        Gate::authorize('manage-patients');
+        $this->reset('search', 'genderFilter');
+        $this->resetPage();
     }
 
     public function create(): void

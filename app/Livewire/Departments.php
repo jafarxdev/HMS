@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Locked;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -18,6 +19,7 @@ class Departments extends Component
 {
     use WithPagination;
 
+    #[Url(except: '')]
     public string $search = '';
 
     #[Locked]
@@ -33,6 +35,13 @@ class Departments extends Component
         if (in_array($property, ['search'])) {
             $this->resetPage();
         }
+    }
+
+    public function resetFilters(): void
+    {
+        Gate::authorize('manage-departments');
+        $this->reset('search');
+        $this->resetPage();
     }
 
     public function create(): void

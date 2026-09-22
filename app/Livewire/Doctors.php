@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Locked;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -20,10 +21,13 @@ class Doctors extends Component
 {
     use WithPagination;
 
+    #[Url(except: '')]
     public string $search = '';
 
+    #[Url(except: '')]
     public string $departmentFilter = '';
 
+    #[Url(except: '')]
     public string $statusFilter = '';
 
     #[Locked]
@@ -39,6 +43,13 @@ class Doctors extends Component
         if (in_array($property, ['search', 'departmentFilter', 'statusFilter'])) {
             $this->resetPage();
         }
+    }
+
+    public function resetFilters(): void
+    {
+        Gate::authorize('manage-doctors');
+        $this->reset('search', 'departmentFilter', 'statusFilter');
+        $this->resetPage();
     }
 
     public function create(): void

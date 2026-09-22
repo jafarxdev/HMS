@@ -27,6 +27,11 @@
         <x-select wire:model.live="departmentFilter" aria-label="Department filter"><option value="">All departments</option>@foreach ($departments as $department)<option wire:key="filter-department-{{ $department->id }}" value="{{ $department->id }}">{{ $department->name }}</option>@endforeach</x-select>
         <x-select wire:model.live="statusFilter" aria-label="Status filter"><option value="">All statuses</option><option value="active">Active</option><option value="inactive">Inactive</option></x-select>
     </div>
+    <div class="mb-4 flex items-center gap-4">
+        <x-button wire:click="resetFilters" variant="secondary">Clear filters</x-button>
+        <span wire:loading.delay role="status" class="text-sm text-slate-500">Updating…</span>
+        <span class="text-sm text-slate-500">{{ $records->total() }} results</span>
+    </div>
     <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white">
         <table class="w-full text-left text-sm">
             <thead class="bg-slate-100 text-slate-600"><tr><th class="p-4">Doctor</th><th class="p-4">Department</th><th class="p-4">Specialization</th><th class="p-4">Status</th><th class="p-4 text-right">Actions</th></tr></thead>
