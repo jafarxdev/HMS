@@ -14,7 +14,15 @@ class MedicalRecord extends Model
     use HasFactory;
 
     /** @var list<string> */
-    protected $fillable = ['patient_id', 'doctor_id', 'diagnosis', 'symptoms', 'treatment', 'notes', 'visit_date'];
+    protected $fillable = [
+        'patient_id',
+        'doctor_id',
+        'diagnosis',
+        'symptoms',
+        'treatment',
+        'notes',
+        'visit_date',
+    ];
 
     /** @return array<string, string> */
     protected function casts(): array

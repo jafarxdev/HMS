@@ -17,7 +17,16 @@ class Patient extends Model
     public const BLOOD_GROUPS = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
 
     /** @var list<string> */
-    protected $fillable = ['name', 'gender', 'date_of_birth', 'phone', 'email', 'address', 'blood_group', 'emergency_contact'];
+    protected $fillable = [
+        'name',
+        'gender',
+        'date_of_birth',
+        'phone',
+        'email',
+        'address',
+        'blood_group',
+        'emergency_contact',
+    ];
 
     /** @return array<string, string> */
     protected function casts(): array

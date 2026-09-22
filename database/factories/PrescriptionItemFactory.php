@@ -12,6 +12,13 @@ class PrescriptionItemFactory extends Factory
     /** @return array<string, mixed> */
     public function definition(): array
     {
-        return ['prescription_id' => Prescription::factory(), 'medicine_name' => 'Example medicine', 'dosage' => '1 tablet', 'frequency' => 'Once daily', 'duration' => '3 days', 'instructions' => 'Demo data only'];
+        return [
+            'prescription_id' => Prescription::factory(),
+            'medicine_name' => 'Example medicine',
+            'dosage' => '1 tablet',
+            'frequency' => 'Once daily',
+            'duration' => '3 days',
+            'instructions' => 'Demo data only',
+        ];
     }
 }

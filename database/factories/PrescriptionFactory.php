@@ -12,6 +12,12 @@ class PrescriptionFactory extends Factory
     /** @return array<string, mixed> */
     public function definition(): array
     {
-        return ['medical_record_id' => MedicalRecord::factory(), 'doctor_id' => fn (array $attributes) => MedicalRecord::findOrFail($attributes['medical_record_id'])->doctor_id, 'patient_id' => fn (array $attributes) => MedicalRecord::findOrFail($attributes['medical_record_id'])->patient_id, 'prescription_date' => today()->toDateString(), 'notes' => 'Follow the prescribed instructions.'];
+        return [
+            'medical_record_id' => MedicalRecord::factory(),
+            'doctor_id' => fn (array $attributes) => MedicalRecord::findOrFail($attributes['medical_record_id'])->doctor_id,
+            'patient_id' => fn (array $attributes) => MedicalRecord::findOrFail($attributes['medical_record_id'])->patient_id,
+            'prescription_date' => today()->toDateString(),
+            'notes' => 'Follow the prescribed instructions.',
+        ];
     }
 }

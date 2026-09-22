@@ -31,7 +31,16 @@ class Patients extends Component
     public bool $showForm = false;
 
     /** @var array<string, mixed> */
-    public array $form = ['name' => '', 'gender' => '', 'date_of_birth' => '', 'phone' => '', 'email' => '', 'address' => '', 'blood_group' => '', 'emergency_contact' => ''];
+    public array $form = [
+        'name' => '',
+        'gender' => '',
+        'date_of_birth' => '',
+        'phone' => '',
+        'email' => '',
+        'address' => '',
+        'blood_group' => '',
+        'emergency_contact' => '',
+    ];
 
     public function updated(string $property): void
     {

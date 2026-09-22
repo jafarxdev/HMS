@@ -36,7 +36,15 @@ class Doctors extends Component
     public bool $showForm = false;
 
     /** @var array<string, mixed> */
-    public array $form = ['department_id' => '', 'user_id' => '', 'name' => '', 'email' => '', 'phone' => '', 'specialization' => '', 'status' => 'active'];
+    public array $form = [
+        'department_id' => '',
+        'user_id' => '',
+        'name' => '',
+        'email' => '',
+        'phone' => '',
+        'specialization' => '',
+        'status' => 'active',
+    ];
 
     public function updated(string $property): void
     {

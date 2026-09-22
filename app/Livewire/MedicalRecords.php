@@ -36,7 +36,15 @@ class MedicalRecords extends Component
     public bool $showForm = false;
 
     /** @var array<string, mixed> */
-    public array $form = ['patient_id' => '', 'doctor_id' => '', 'diagnosis' => '', 'symptoms' => '', 'treatment' => '', 'notes' => '', 'visit_date' => ''];
+    public array $form = [
+        'patient_id' => '',
+        'doctor_id' => '',
+        'diagnosis' => '',
+        'symptoms' => '',
+        'treatment' => '',
+        'notes' => '',
+        'visit_date' => '',
+    ];
 
     public function updated(string $property): void
     {

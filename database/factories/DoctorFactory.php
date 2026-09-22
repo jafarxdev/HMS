@@ -12,6 +12,13 @@ class DoctorFactory extends Factory
     /** @return array<string, mixed> */
     public function definition(): array
     {
-        return ['department_id' => Department::factory(), 'name' => fake()->name(), 'email' => fake()->unique()->safeEmail(), 'phone' => fake()->numerify('07########'), 'specialization' => 'General medicine', 'status' => 'active'];
+        return [
+            'department_id' => Department::factory(),
+            'name' => fake()->name(),
+            'email' => fake()->unique()->safeEmail(),
+            'phone' => fake()->numerify('07########'),
+            'specialization' => 'General medicine',
+            'status' => 'active',
+        ];
     }
 }

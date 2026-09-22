@@ -16,7 +16,15 @@ class Doctor extends Model
     public const STATUSES = ['active', 'inactive'];
 
     /** @var list<string> */
-    protected $fillable = ['department_id', 'user_id', 'name', 'email', 'phone', 'specialization', 'status'];
+    protected $fillable = [
+        'department_id',
+        'user_id',
+        'name',
+        'email',
+        'phone',
+        'specialization',
+        'status',
+    ];
 
     public function department(): BelongsTo
     {

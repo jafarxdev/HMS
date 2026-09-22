@@ -41,7 +41,15 @@ class Appointments extends Component
     public bool $showForm = false;
 
     /** @var array<string, mixed> */
-    public array $form = ['patient_id' => '', 'doctor_id' => '', 'appointment_date' => '', 'appointment_time' => '', 'status' => 'scheduled', 'reason' => '', 'notes' => ''];
+    public array $form = [
+        'patient_id' => '',
+        'doctor_id' => '',
+        'appointment_date' => '',
+        'appointment_time' => '',
+        'status' => 'scheduled',
+        'reason' => '',
+        'notes' => '',
+    ];
 
     public function updated(string $property): void
     {

@@ -13,7 +13,14 @@ class PrescriptionItem extends Model
     use HasFactory;
 
     /** @var list<string> */
-    protected $fillable = ['prescription_id', 'medicine_name', 'dosage', 'frequency', 'duration', 'instructions'];
+    protected $fillable = [
+        'prescription_id',
+        'medicine_name',
+        'dosage',
+        'frequency',
+        'duration',
+        'instructions',
+    ];
 
     public function prescription(): BelongsTo
     {

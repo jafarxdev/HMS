@@ -15,7 +15,15 @@ class Appointment extends Model
     public const STATUSES = ['scheduled', 'completed', 'cancelled'];
 
     /** @var list<string> */
-    protected $fillable = ['patient_id', 'doctor_id', 'appointment_date', 'appointment_time', 'status', 'reason', 'notes'];
+    protected $fillable = [
+        'patient_id',
+        'doctor_id',
+        'appointment_date',
+        'appointment_time',
+        'status',
+        'reason',
+        'notes',
+    ];
 
     /** @return array<string, string> */
     protected function casts(): array

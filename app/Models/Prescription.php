@@ -14,7 +14,13 @@ class Prescription extends Model
     use HasFactory;
 
     /** @var list<string> */
-    protected $fillable = ['medical_record_id', 'doctor_id', 'patient_id', 'notes', 'prescription_date'];
+    protected $fillable = [
+        'medical_record_id',
+        'doctor_id',
+        'patient_id',
+        'notes',
+        'prescription_date',
+    ];
 
     /** @return array<string, string> */
     protected function casts(): array

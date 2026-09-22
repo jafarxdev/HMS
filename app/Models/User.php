@@ -13,11 +13,6 @@ class User extends Authenticatable
 {
     public const ROLES = ['admin', 'receptionist', 'doctor'];
 
-    public function doctor(): HasOne
-    {
-        return $this->hasOne(Doctor::class);
-    }
-
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
@@ -53,5 +48,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function doctor(): HasOne
+    {
+        return $this->hasOne(Doctor::class);
     }
 }
