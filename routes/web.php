@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LogoutController;
+use App\Livewire\Appointments;
 use App\Livewire\Auth\Login;
 use App\Livewire\Dashboard;
 use App\Livewire\Departments;
@@ -13,6 +14,7 @@ Route::livewire('/login', Login::class)->middleware('guest')->name('login');
 
 Route::middleware('auth')->group(function () {
     Route::livewire('/dashboard', Dashboard::class)->name('dashboard');
+    Route::livewire('/appointments', Appointments::class)->name('appointments');
     Route::livewire('/patients', Patients::class)->name('patients');
     Route::livewire('/doctors', Doctors::class)->name('doctors');
     Route::livewire('/departments', Departments::class)->name('departments');
